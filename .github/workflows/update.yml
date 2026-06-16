@@ -1,0 +1,32 @@
+name: Update Strava Miles
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - run: pip install requests
+
+      - name: Run script
+        run: python calculate_miles.py
+        env:
+          STRAVA_ACCESS_TOKEN: ${{ secrets.STRAVA_ACCESS_TOKEN }}
+
+      - name: Commit result
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add miles.json
+          git commit -m "update miles" || exit 0
+          git push
