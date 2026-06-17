@@ -1,7 +1,26 @@
 import os
 import requests
 
-ACCESS_TOKEN = os.environ["STRAVA_ACCESS_TOKEN"]
+CLIENT_ID = os.environ["STRAVA_CLIENT_ID"]
+CLIENT_SECRET = os.environ["STRAVA_CLIENT_SECRET"]
+REFRESH_TOKEN = os.environ["STRAVA_REFRESH_TOKEN"]
+
+token_response = requests.post(
+    "https://www.strava.com/oauth/token",
+    data={
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
+        "refresh_token": REFRESH_TOKEN,
+        "grant_type": "refresh_token"
+    }
+)
+
+token_data = token_response.json()
+
+print(token_response.status_code)
+print(token_data)
+
+ACCESS_TOKEN = token_data["access_token"]
 
 headers = {
     "Authorization": f"Bearer {ACCESS_TOKEN}"
