@@ -15,10 +15,11 @@ token_response = requests.post(
     }
 )
 
-token_data = token_response.json()
+print("TOKEN STATUS:", token_response.status_code)
+print("TOKEN TEXT:")
+print(token_response.text)
 
-print(token_response.status_code)
-print(token_data)
+token_data = token_response.json()
 
 ACCESS_TOKEN = token_data["access_token"]
 
