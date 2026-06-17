@@ -16,6 +16,8 @@ while True:
     url = f"https://www.strava.com/api/v3/athlete/activities?page={page}&per_page={per_page}"
     r = requests.get(url, headers=headers)
     activities = r.json()
+    print(r.status_code)
+    print(r.text)
 
     if not activities:
         break
